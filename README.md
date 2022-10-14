@@ -52,7 +52,7 @@ The higher the level, the bigger the radius of the ping.
    b. "Go to Manage" -> "Browse local files"
    c. Steam should open your game folder
 2. Extract the contents of the archive into the game folder.
-3. Locate azumatt.ThirdEye.cfg under BepInEx\config and configure the mod to your needs
+3. Locate Azumatt.ThirdEye.cfg under BepInEx\config and configure the mod to your needs
 
 #### Server
 
@@ -60,7 +60,7 @@ The higher the level, the bigger the radius of the ping.
 1. Locate your main folder manually and :
    a. Extract the contents of the archive into the main folder that contains BepInEx
    b. Launch your game at least once to generate the config file needed if you haven't already done so.
-   c. Locate azumatt.ThirdEye.cfg under BepInEx\config on your machine and configure the mod to your needs
+   c. Locate Azumatt.ThirdEye.cfg under BepInEx\config on your machine and configure the mod to your needs
 2. Reboot your server. All clients will now sync to the server's config file even if theirs differs. Config Manager mod changes will only change the client config, not what the server is enforcing.
 
 
