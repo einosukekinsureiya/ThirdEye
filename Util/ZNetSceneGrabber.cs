@@ -5,19 +5,19 @@ namespace ThirdEye.Util
 {
     public class ZNetSceneGrabber
     {
-        private static Transform visualEffect;
-        private static GameObject audioEffect;
+        private static Transform _visualEffect = null!;
+        private static GameObject _audioEffect = null!;
 
         //Used to get the shockwave effect.
         public static Transform GetVisualEffect()
         {
-            if (visualEffect == null)
+            if (_visualEffect == null)
             {
                 Color maxColor = new();
                 GameObject fetch = ZNetScene.instance.GetPrefab("vfx_sledge_hit");
                 Transform fetch2 = fetch.transform.Find("waves");
-                visualEffect = Object.Instantiate(fetch2);
-                MainModule mainModule = visualEffect.GetComponent<ParticleSystem>().main;
+                _visualEffect = Object.Instantiate(fetch2);
+                MainModule mainModule = _visualEffect.GetComponent<ParticleSystem>().main;
                 mainModule.simulationSpeed = 0.2F;
                 mainModule.startSize = 0.1F;
                 if (ColorUtility.TryParseHtmlString(ThirdEyePlugin.VisualEffectColor.Value, out Color color))
@@ -30,18 +30,18 @@ namespace ThirdEye.Util
             }
 
             //Resize the effect every time to match your Third Eye skill.
-            MainModule main = visualEffect.GetComponent<ParticleSystem>().main;
+            MainModule main = _visualEffect.GetComponent<ParticleSystem>().main;
             main.startSizeMultiplier = EnemyHud.instance.m_maxShowDistance * 2F;
-            return visualEffect;
+            return _visualEffect;
         }
 
         //Used to get the sound effect.
         public static GameObject GetAudioEffect()
         {
-            if (audioEffect != null) return audioEffect;
+            if (_audioEffect != null) return _audioEffect;
             GameObject fetch = ZNetScene.instance.GetPrefab("sfx_lootspawn");
-            audioEffect = Object.Instantiate(fetch);
-            ZSFX audioModule = audioEffect.GetComponent<ZSFX>();
+            _audioEffect = Object.Instantiate(fetch);
+            ZSFX audioModule = _audioEffect.GetComponent<ZSFX>();
 
             //Adjusting the audio settings to give it some cool reverb.
             audioModule.m_minPitch = 0.8F;
@@ -53,7 +53,7 @@ namespace ThirdEye.Util
             audioModule.m_delay = 1;
             audioModule.m_time = 1;
 
-            return audioEffect;
+            return _audioEffect;
         }
     }
 }

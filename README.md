@@ -1,4 +1,4 @@
-﻿A skill which reveals nearby creatures' HP bars (and optionally other players), shows them on the minimap, and increases detection range based on your skill level.
+A skill which reveals nearby creatures' HP bars (and optionally other players), shows them on the minimap, and increases detection range based on your skill level.
 
 New Skill "Third Eye" rewards players the longer they play on your server or their world with levels. They level up just by the days passing! Two times per in-game day to earn exp. Morning and Evening trigger experience gain.
 The higher the level, the bigger the radius of the ping.
@@ -76,8 +76,11 @@ The higher the level, the bigger the radius of the ping.
 `STEAM:` https://steamcommunity.com/id/azumatt/﻿
 
 
-For Questions or Comments, find me﻿ in the Odin Plus Team Discord:
+For Questions or Comments, find me in the Odin Plus Team Discord or in mine:
+
 [![https://i.imgur.com/XXP6HCU.png](https://i.imgur.com/XXP6HCU.png)](https://discord.gg/Pb6bVMnFb2)
+<a href="https://discord.gg/pdHgy6Bsng"><img src="https://i.imgur.com/Xlcbmm9.png" href="https://discord.gg/pdHgy6Bsng" width="175" height="175"></a>
+
 
 ## Inspiration/Original Mod Author
 
@@ -86,5 +89,8 @@ For Questions or Comments, find me﻿ in the Odin Plus Team Discord:
 
 ***
 > # Update Information (Latest listed first)
+> ### v2.0.0
+> - Update ServerSync and SkillManager internally
+> - Changed the config file name to be more consistent with my other mods. (Azumatt.ThirdEye.cfg)
 > ### v1.0.0
 > - Initial Release

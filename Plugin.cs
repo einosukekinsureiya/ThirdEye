@@ -15,7 +15,7 @@ namespace ThirdEye
     {
         internal const string ModName = "ThirdEye";
         internal const string ModVersion = "1.0.0";
-        internal const string Author = "azumatt";
+        internal const string Author = "Azumatt";
         private const string ModGUID = Author + "." + ModName;
         private static string ConfigFileName = ModGUID + ".cfg";
         private static string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
@@ -115,22 +115,22 @@ namespace ThirdEye
 
         #region ConfigOptions
 
-        private static ConfigEntry<bool>? _serverConfigLocked;
-        public static ConfigEntry<float>? BaseRange;
-        public static ConfigEntry<float>? SkillMultiplier;
-        public static ConfigEntry<float>? StaminaDrain;
-        public static ConfigEntry<bool>? ShowMessage;
-        public static ConfigEntry<bool>? ShowVisual;
-        public static ConfigEntry<bool>? PlayAudio;
-        public static ConfigEntry<KeyboardShortcut>? KeyBind;
+        private static ConfigEntry<bool> _serverConfigLocked = null!;
+        public static ConfigEntry<float> BaseRange = null!;
+        public static ConfigEntry<float> SkillMultiplier = null!;
+        public static ConfigEntry<float> StaminaDrain = null!;
+        public static ConfigEntry<bool> ShowMessage = null!;
+        public static ConfigEntry<bool> ShowVisual = null!;
+        public static ConfigEntry<bool> PlayAudio = null!;
+        public static ConfigEntry<KeyboardShortcut> KeyBind = null!;
         public static bool InvalidKey = false;
-        public static ConfigEntry<string>? CustomMessage;
-        public static ConfigEntry<string>? MessageColor;
-        public static ConfigEntry<bool>? ShowMinimapIcons;
-        public static ConfigEntry<bool>? AllowAdditionalZoom;
-        public static ConfigEntry<float>? MiniMapZoomLevel;
-        public static ConfigEntry<string>? VisualEffectColor;
-        public static ConfigEntry<bool>? AllowPlayerDetection;
+        public static ConfigEntry<string> CustomMessage = null!;
+        public static ConfigEntry<string> MessageColor = null!;
+        public static ConfigEntry<bool> ShowMinimapIcons = null!;
+        public static ConfigEntry<bool> AllowAdditionalZoom = null!;
+        public static ConfigEntry<float> MiniMapZoomLevel = null!;
+        public static ConfigEntry<string> VisualEffectColor = null!;
+        public static ConfigEntry<bool> AllowPlayerDetection = null!;
 
         private ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description,
             bool synchronizedSetting = true)
