@@ -89,6 +89,8 @@ For Questions or Comments, find me in the Odin Plus Team Discord or in mine:
 
 ***
 > # Update Information (Latest listed first)
+> ### v2.0.1
+> - Update ServerSync internally
 > ### v2.0.0
 > - Update ServerSync and SkillManager internally
 > - Changed the config file name to be more consistent with my other mods. (Azumatt.ThirdEye.cfg)
