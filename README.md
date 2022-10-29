@@ -89,7 +89,7 @@ For Questions or Comments, find me in the Odin Plus Team Discord or in mine:
 
 ***
 > # Update Information (Latest listed first)
-> ### v2.0.1
+> ### v2.0.1/2.0.2
 > - Update ServerSync internally
 > ### v2.0.0
 > - Update ServerSync and SkillManager internally
