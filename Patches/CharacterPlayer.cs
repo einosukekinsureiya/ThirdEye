@@ -69,19 +69,18 @@ namespace ThirdEye.Patches
             else
             {
                 Player.m_localPlayer.Message(MessageHud.MessageType.Center, "Not enough stamina");
-                Hud.instance.StaminaBarNoStaminaFlash();
-
+                Hud.instance.StaminaBarEmptyFlash();
                 return;
             }
 
             //Create the ping effects.
-            if (ShowVisual.Value)
+            if (ShowVisual.Value == Toggle.On)
             {
                 Transform visualObject = UnityEngine.Object.Instantiate(ZNetSceneGrabber.GetVisualEffect(),
                     __instance.GetHeadPoint(), Quaternion.identity);
             }
 
-            if (PlayAudio.Value)
+            if (PlayAudio.Value == Toggle.On)
             {
                 GameObject audioObject = UnityEngine.Object.Instantiate(ZNetSceneGrabber.GetAudioEffect(),
                     __instance.GetHeadPoint(), Quaternion.identity);
@@ -93,9 +92,10 @@ namespace ThirdEye.Patches
             int guysNum = 0;
 
             //Loop through the characters.
-            if (AllowPlayerDetection.Value)
+            if (AllowPlayerDetection.Value == Toggle.On)
             {
-                foreach (Character character in guysList.Where(character => EnemyHud.instance.TestShow(character)))
+                foreach (Character character in guysList.Where(character => EnemyHud.instance.TestShow(character, false) 
+                                                                            && !(character.IsTamed() && ShowTames.Value == Toggle.Off)))
                 {
                     guysNum++;
                     EnemyHud.instance.ShowHud(character, false);
@@ -108,7 +108,8 @@ namespace ThirdEye.Patches
             else
             {
                 foreach (Character character in guysList.Where(character =>
-                             character is not Player && EnemyHud.instance.TestShow(character)))
+                             character is not Player && EnemyHud.instance.TestShow(character, false) 
+                                                     && !(character.IsTamed() && ShowTames.Value == Toggle.Off)))
                 {
                     guysNum++;
                     EnemyHud.instance.ShowHud(character, false);
@@ -127,7 +128,7 @@ namespace ThirdEye.Patches
             }
 
             //Show message about how many enemies are nearby.
-            if (!ShowMessage.Value) return;
+            if (ShowMessage.Value == Toggle.Off) return;
             if (CustomMessage.Value.Length > 0)
             {
                 string newMessage = CustomMessage.Value.Replace("#", guysNum.ToString());

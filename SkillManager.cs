@@ -27,10 +27,10 @@ public class Skill
 
     public float SkillGainFactor
     {
-        get => skillDef.m_increseStep;
+        get => skillDef.m_increaseStep;
         set
         {
-            skillDef.m_increseStep = value;
+            skillDef.m_increaseStep = value;
             SkillGainFactorChanged?.Invoke(value);
         }
     }
@@ -68,7 +68,7 @@ public class Skill
         {
             m_description = "$skilldesc_" + sanitizedName,
             m_icon = icon,
-            m_increseStep = 1f,
+            m_increaseStep = 1f,
             m_skill = skill
         };
         internalSkillName = sanitizedName;

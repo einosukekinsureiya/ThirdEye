@@ -14,7 +14,7 @@ namespace ThirdEye.Patches
         static void Prefix(Minimap __instance)
         {
             //Allow additional map zoom if set in the config.
-            if (AllowAdditionalZoom.Value)
+            if (AllowAdditionalZoom.Value == Toggle.On)
             {
                 __instance.m_minZoom = MiniMapZoomLevel.Value;
             }
@@ -40,7 +40,7 @@ namespace ThirdEye.Patches
         public static void Postfix(Minimap __instance)
         {
             //Skip this entirely if disabled in the config.
-            if (!ShowMinimapIcons.Value) return;
+            if (ShowMinimapIcons.Value == Toggle.Off) return;
             //Populate the list of current HUD characters.
             List<Character> guysList = (from hud in EnemyHud.instance.m_huds.Values
                 where hud.m_character != null && hud.m_hoverTimer < EnemyHud.instance.m_hoverShowDuration

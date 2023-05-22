@@ -14,7 +14,7 @@ namespace ThirdEye
     public class ThirdEyePlugin : BaseUnityPlugin
     {
         internal const string ModName = "ThirdEye";
-        internal const string ModVersion = "2.0.2";
+        internal const string ModVersion = "2.1.3";
         internal const string Author = "Azumatt";
         private const string ModGUID = Author + "." + ModName;
         private static string ConfigFileName = ModGUID + ".cfg";
@@ -27,9 +27,15 @@ namespace ThirdEye
         private static readonly ConfigSync ConfigSync = new(ModGUID)
             { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
 
+        public enum Toggle
+        {
+            On = 1,
+            Off = 0
+        }
+
         public void Awake()
         {
-            _serverConfigLocked = config("General", "Force Server Config", true, "Force Server Config");
+            _serverConfigLocked = config("General", "Force Server Config", Toggle.On, "Force Server Config");
             _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
 
             BaseRange = config("Adjustments", "Base Detection Range", 20.0F,
@@ -38,15 +44,15 @@ namespace ThirdEye
                 "How much to multiply the increase in detection range granted by Third Eye skill level. A multiplier of 1 grants 30 additional meters of range at Third Eye 100, for a total of 60 meters. A multiplier of 5 would grant 150 additional meters, and so on. ");
             StaminaDrain = config("Adjustments", "Stamina Drain", 70.0F,
                 "How much stamina to drain when using the skill. By default this is 70, rather large to make the game balanced. Setting this to 0 would cause no drain to occur.");
-            ShowMessage = config("Features", "Show Message", true,
+            ShowMessage = config("Features", "Show Message", Toggle.On,
                 "When using the ability, show a message confirming how many creatures are nearby.", false);
-            ShowVisual = config("Features", "Visual Effect", true,
+            ShowVisual = config("Features", "Visual Effect", Toggle.On,
                 "Show an expanding circle upon using the ability, representing the detection range.", false);
-            PlayAudio = config("Features", "Audio Effect", true,
+            PlayAudio = config("Features", "Audio Effect", Toggle.On,
                 "Play a shwimsical sound when using the ability. Can be heard by other players.", false);
-            ShowMinimapIcons = config("Features", "Minimap Icons", true,
+            ShowMinimapIcons = config("Features", "Minimap Icons", Toggle.On,
                 "Show detected enemies on the minimap.", false);
-            AllowAdditionalZoom = config("Features", "Additional Zoom", true,
+            AllowAdditionalZoom = config("Features", "Additional Zoom", Toggle.On,
                 "Lets you zoom in two additional steps on the minimap.", false);
             KeyBind = config("Features", "Custom Keybind", KeyboardShortcut.Empty, 
                 new ConfigDescription(
@@ -61,8 +67,10 @@ namespace ThirdEye
                 false);
             MiniMapZoomLevel = config("Adjustments", "MiniMap Zoom Level", 0.00375F,
                 "Zoom level of the minimap, default value allows 2 additional zoom levels. Play around with this setting to get your desired effects.", false);
-            AllowPlayerDetection = config("Features", "Player detection", false,
+            AllowPlayerDetection = config("Features", "Player detection", Toggle.Off,
                 "Should the ping be able to detect other players?");
+            ShowTames = config("Features", "Tames detection", Toggle.Off,
+                "Should the ping be able to detect tamed animals?");
 
 
             Skill
@@ -115,22 +123,23 @@ namespace ThirdEye
 
         #region ConfigOptions
 
-        private static ConfigEntry<bool> _serverConfigLocked = null!;
+        private static ConfigEntry<Toggle> _serverConfigLocked = null!;
         public static ConfigEntry<float> BaseRange = null!;
         public static ConfigEntry<float> SkillMultiplier = null!;
         public static ConfigEntry<float> StaminaDrain = null!;
-        public static ConfigEntry<bool> ShowMessage = null!;
-        public static ConfigEntry<bool> ShowVisual = null!;
-        public static ConfigEntry<bool> PlayAudio = null!;
+        public static ConfigEntry<Toggle> ShowMessage = null!;
+        public static ConfigEntry<Toggle> ShowVisual = null!;
+        public static ConfigEntry<Toggle> PlayAudio = null!;
         public static ConfigEntry<KeyboardShortcut> KeyBind = null!;
         public static bool InvalidKey = false;
         public static ConfigEntry<string> CustomMessage = null!;
         public static ConfigEntry<string> MessageColor = null!;
-        public static ConfigEntry<bool> ShowMinimapIcons = null!;
-        public static ConfigEntry<bool> AllowAdditionalZoom = null!;
+        public static ConfigEntry<Toggle> ShowMinimapIcons = null!;
+        public static ConfigEntry<Toggle> AllowAdditionalZoom = null!;
         public static ConfigEntry<float> MiniMapZoomLevel = null!;
         public static ConfigEntry<string> VisualEffectColor = null!;
-        public static ConfigEntry<bool> AllowPlayerDetection = null!;
+        public static ConfigEntry<Toggle> AllowPlayerDetection = null!;
+        public static ConfigEntry<Toggle> ShowTames = null!;
 
         private ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description,
             bool synchronizedSetting = true)
