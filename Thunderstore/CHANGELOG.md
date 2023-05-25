@@ -1,6 +1,6 @@
 > # Update Information (Latest listed first)
 > ### v2.1.3
-> - Updated for Valheim 0.216.5
+> - Updated for Valheim 0.216.6
 > - Filter out tames option.
 > ### v2.0.3
 > - Mistlands update
