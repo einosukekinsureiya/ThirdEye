@@ -9,7 +9,7 @@ namespace ThirdEye.Util
     {
         private static Transform _visualEffect = null!;
         private static GameObject _audioEffect = null!;
-        internal static GameObject WhistleGlobal;
+        private static GameObject WhistleGlobal;
 
 
         //Used to get the shockwave effect.
