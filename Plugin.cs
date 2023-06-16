@@ -7,10 +7,7 @@ using HarmonyLib;
 using SkillManager;
 using ServerSync;
 using UnityEngine;
-using System.Collections;
-using UnityEngine.Networking;
 using System.Linq;
-using ThirdEye.Util;
 
 namespace ThirdEye
 {
@@ -24,6 +21,7 @@ namespace ThirdEye
         private static string ConfigFileName = ModGUID + ".cfg";
         private static string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
         internal static string ConnectionError = "";
+        public static GameObject WhistleGlobal = null;
 
         public static readonly ManualLogSource ThirdEyeLogger =
             BepInEx.Logging.Logger.CreateLogSource(ModName);
@@ -32,8 +30,7 @@ namespace ThirdEye
         { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
 
         //internal static AssetBundle AssetBundle { get; private set; }
-        
-        
+
         
         public enum Toggle
         {
@@ -46,10 +43,16 @@ namespace ThirdEye
             Assembly assembly = Assembly.GetExecutingAssembly();
             Harmony harmony = new(ModGUID);
             harmony.PatchAll(assembly);
-
+            SetupWatcher();
+            LoadAssets();
             //AssetBundle = ZNetSceneGrabber.LoadAssetBundle("whistle");
 
-            ZNetSceneGrabber.LoadAssets();
+            //Skill name and skill icon. By default the icon would be found in the icons folder.
+            Skill thirdeye = new("ThirdEye", "thirdeye.png"); 
+
+            thirdeye.Name.English("Third Eye"); // Vanilla can't find it if it has a space, so, re-localize here with one.
+            thirdeye.Description.English("Sense enemies around you");
+            thirdeye.Configurable = true;
 
             _serverConfigLocked = config("General", "Force Server Config", Toggle.On, "Force Server Config");
             _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
@@ -88,27 +91,14 @@ namespace ThirdEye
             ShowTames = config("Features", "Tames detection", Toggle.Off,
                 "Should the ping be able to detect tamed animals?");
 
-            
-
-            Skill
-                thirdeye = new("ThirdEye",
-                    "thirdeye.png"); // Skill name along with the skill icon. By default the icon is found in the icons folder. Put it there if you wish to load one.
-
-            thirdeye.Name
-                .English("Third Eye"); // Vanilla can't find it if it has a space, so, re-localize here with one.
-            thirdeye.Description.English("Sense enemies around you");
-            thirdeye.Configurable = true;
-
-
-            
-            SetupWatcher();
-
         }
 
         private void OnDestroy()
         {
             Config.Save();
         }
+
+
 
         private void SetupWatcher()
         {
@@ -120,6 +110,28 @@ namespace ThirdEye
             watcher.SynchronizingObject = ThreadingHelper.SynchronizingObject;
             watcher.EnableRaisingEvents = true;
         }
+
+
+
+        private static AssetBundle GetAssetBundleFromResources(string filename)
+        {
+            var execAssembly = Assembly.GetExecutingAssembly();
+            var resourceName = execAssembly.GetManifestResourceNames()
+                .Single(str => str.EndsWith(filename));
+
+            using (var stream = execAssembly.GetManifestResourceStream(resourceName))
+            {
+                return AssetBundle.LoadFromStream(stream);
+            }
+        }
+        public static void LoadAssets()
+        {
+            var assetBundle = GetAssetBundleFromResources("whistle");
+            WhistleGlobal = assetBundle.LoadAsset<GameObject>("Whistle");
+            assetBundle?.Unload(false);
+        }
+
+
 
         private void ReadConfigValues(object sender, FileSystemEventArgs e)
         {
@@ -156,8 +168,6 @@ namespace ThirdEye
         public static ConfigEntry<string> VisualEffectColor = null!;
         public static ConfigEntry<Toggle> AllowPlayerDetection = null!;
         public static ConfigEntry<Toggle> ShowTames = null!;
-        public static GameObject WhistleGlobal = null!;
-
         private ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description,
             bool synchronizedSetting = true)
         {

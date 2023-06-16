@@ -66,7 +66,7 @@ namespace ThirdEye.Util
         }
 
         */
-        private static AssetBundle GetAssetBundleFromResources(string filename)
+        /*private static AssetBundle GetAssetBundleFromResources(string filename)
         {
             var execAssembly = Assembly.GetExecutingAssembly();
             var resourceName = execAssembly.GetManifestResourceNames()
@@ -83,7 +83,7 @@ namespace ThirdEye.Util
             var assetBundle = GetAssetBundleFromResources("whistle");
             WhistleGlobal = assetBundle.LoadAsset<GameObject>("Whistle");
             assetBundle?.Unload(false);
-        }
+        }*/
 
 
         public static GameObject GetAudioEffect()
