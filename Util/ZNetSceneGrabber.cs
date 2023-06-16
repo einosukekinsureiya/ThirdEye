@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using System.Reflection;
+using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
 namespace ThirdEye.Util
@@ -7,6 +9,8 @@ namespace ThirdEye.Util
     {
         private static Transform _visualEffect = null!;
         private static GameObject _audioEffect = null!;
+        internal static GameObject WhistleGlobal;
+
 
         //Used to get the shockwave effect.
         public static Transform GetVisualEffect()
@@ -36,11 +40,63 @@ namespace ThirdEye.Util
         }
 
         //Used to get the sound effect.
+        
+        
+        /*
+        internal static AssetBundle? LoadAssetBundle(string bundleName)
+        {
+            var resource = typeof(ThirdEye.ThirdEyePlugin).Assembly.GetManifestResourceNames().Single
+                (s => s.EndsWith(bundleName));
+            using var stream = typeof(ThirdEye.ThirdEyePlugin).Assembly.GetManifestResourceStream(resource);
+            return AssetBundle.LoadFromStream(stream);
+        }
+
+        internal static void LoadAssets(AssetBundle? bundle, ZNetScene zNetScene)
+        {
+            var tmp = bundle?.LoadAllAssets();
+            if (zNetScene.m_prefabs.Count <= 0) return;
+            if (tmp == null) return;
+            foreach (var o in tmp)
+            {
+                var obj = (GameObject)o;
+                zNetScene.m_prefabs.Add(obj);
+                var hashcode = obj.GetHashCode();
+                zNetScene.m_namedPrefabs.Add(hashcode, obj);
+            }
+        }
+
+        */
+        private static AssetBundle GetAssetBundleFromResources(string filename)
+        {
+            var execAssembly = Assembly.GetExecutingAssembly();
+            var resourceName = execAssembly.GetManifestResourceNames()
+                .Single(str => str.EndsWith(filename));
+
+            using (var stream = execAssembly.GetManifestResourceStream(resourceName))
+            {
+                return AssetBundle.LoadFromStream(stream);
+            }
+        }
+        
+        public static void LoadAssets()
+        {
+            var assetBundle = GetAssetBundleFromResources("whistle");
+            WhistleGlobal = assetBundle.LoadAsset<GameObject>("Whistle");
+            assetBundle?.Unload(false);
+        }
+
+
         public static GameObject GetAudioEffect()
         {
-            if (_audioEffect != null) return _audioEffect;
+
+           /* if (_audioEffect != null) return _audioEffect;
             GameObject fetch = ZNetScene.instance.GetPrefab("sfx_lootspawn");
             _audioEffect = Object.Instantiate(fetch);
+            ZSFX audioModule = _audioEffect.GetComponent<ZSFX>();*/
+
+            if (_audioEffect != null) return _audioEffect;
+            /*GameObject fetch*/_ = ZNetScene.instance.GetPrefab("Whistle");
+            _audioEffect = Object.Instantiate(WhistleGlobal);
             ZSFX audioModule = _audioEffect.GetComponent<ZSFX>();
 
             //Adjusting the audio settings to give it some cool reverb.

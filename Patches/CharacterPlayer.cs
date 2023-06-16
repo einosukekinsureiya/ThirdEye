@@ -83,7 +83,7 @@ namespace ThirdEye.Patches
             if (PlayAudio.Value == Toggle.On)
             {
                 GameObject audioObject = UnityEngine.Object.Instantiate(ZNetSceneGrabber.GetAudioEffect(),
-                    __instance.GetHeadPoint(), Quaternion.identity);
+                    __instance.GetHeadPoint(), Quaternion.identity);                          
             }
 
             //Do the Get Creatures.

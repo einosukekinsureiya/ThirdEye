@@ -7,6 +7,10 @@ using HarmonyLib;
 using SkillManager;
 using ServerSync;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Networking;
+using System.Linq;
+using ThirdEye.Util;
 
 namespace ThirdEye
 {
@@ -25,8 +29,12 @@ namespace ThirdEye
             BepInEx.Logging.Logger.CreateLogSource(ModName);
 
         private static readonly ConfigSync ConfigSync = new(ModGUID)
-            { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
+        { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
 
+        //internal static AssetBundle AssetBundle { get; private set; }
+        
+        
+        
         public enum Toggle
         {
             On = 1,
@@ -35,6 +43,14 @@ namespace ThirdEye
 
         public void Awake()
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Harmony harmony = new(ModGUID);
+            harmony.PatchAll(assembly);
+
+            //AssetBundle = ZNetSceneGrabber.LoadAssetBundle("whistle");
+
+            ZNetSceneGrabber.LoadAssets();
+
             _serverConfigLocked = config("General", "Force Server Config", Toggle.On, "Force Server Config");
             _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
 
@@ -72,6 +88,7 @@ namespace ThirdEye
             ShowTames = config("Features", "Tames detection", Toggle.Off,
                 "Should the ping be able to detect tamed animals?");
 
+            
 
             Skill
                 thirdeye = new("ThirdEye",
@@ -83,10 +100,9 @@ namespace ThirdEye
             thirdeye.Configurable = true;
 
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Harmony harmony = new(ModGUID);
-            harmony.PatchAll(assembly);
+            
             SetupWatcher();
+
         }
 
         private void OnDestroy()
@@ -140,6 +156,7 @@ namespace ThirdEye
         public static ConfigEntry<string> VisualEffectColor = null!;
         public static ConfigEntry<Toggle> AllowPlayerDetection = null!;
         public static ConfigEntry<Toggle> ShowTames = null!;
+        public static GameObject WhistleGlobal = null!;
 
         private ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description,
             bool synchronizedSetting = true)
